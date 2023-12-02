@@ -30,16 +30,17 @@ function processCalibrationValuesPT2(calibrationValues){
     let sum = 0;
 
     for(let i=0; i<calibrationValues.length; i++){
-        let firstDigit = calibrationValues[i].match(/(one|two|three|four|five|six|seven|eight|nine|\d)/)[0];
-        let lastDigit = calibrationValues[i].match(/(\d|one|two|three|four|five|six|seven|eight|nine)(?!.*(\d|one|two|three|four|five|six|seven|eight|nine))/)[0];
 
-        // console.log(firstDigit,lastDigit);
+        // this needs some refactoring ... 
+        let firstDigit = calibrationValues[i].match(/(one|two|three|four|five|six|seven|eight|nine|\d)/)[0];
+        let lastDigit = calibrationValues[i].match(/(?=.*(\d|one|two|three|four|five|six|seven|eight|nine))/)[0];
+
+        if(firstDigit === '') firstDigit = calibrationValues[i].match(/(one|two|three|four|five|six|seven|eight|nine|\d)/)[1];
+        if(lastDigit === '') lastDigit = calibrationValues[i].match(/(?=.*(\d|one|two|three|four|five|six|seven|eight|nine))/)[1];
 
 
         firstDigit = translateSpelledOutNumber(firstDigit);
         lastDigit = translateSpelledOutNumber(lastDigit);
-
-        // console.log(firstDigit,lastDigit);
 
         sum += Number(firstDigit + lastDigit);
     }
@@ -88,11 +89,11 @@ function translateSpelledOutNumber(inputNum){
 const calibrationValuesPT1 = fs.readFileSync('./inputPT1.txt' , 'utf-8').trim().split('\r\n');
 
 
-const calibrationValuesPT2 = fs.readFileSync('./examplePT2.txt' , 'utf-8').trim().split('\r\n');
+// const calibrationValuesPT2 = fs.readFileSync('./examplePT2.txt' , 'utf-8').trim().split('\r\n');
 
 
 // I thought the input would change as well but it didnt xd...
-// const calibrationValuesPT2 = fs.readFileSync('./inputPT1.txt' , 'utf-8').trim().split('\r\n');
+const calibrationValuesPT2 = fs.readFileSync('./inputPT1.txt' , 'utf-8').trim().split('\r\n');
 
 
 
@@ -105,4 +106,9 @@ console.log(res2);
 
 // 54970 is not correct :S and its too low
 // old pt1 solution of 55816 is too high..
+// 54980 is the solution and it was all due to missing overlapping examples such as the ones below
+// eighthree
+// sevenine
+// oneight
+// thanks to https://www.reddit.com/r/adventofcode/comments/1884fpl/2023_day_1for_those_who_stuck_on_part_2/
 
